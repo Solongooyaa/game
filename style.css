@@ -1,0 +1,9 @@
+.board {
+  background-color: rgb(4, 171, 4);
+  position: relative;
+  margin: 30px auto;
+}
+.snake {
+  background-color: rgb(153, 66, 234);
+  position: absolute;
+}
