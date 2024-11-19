@@ -4,8 +4,8 @@ let direction = "up";
 
 const config = {
   size: 20,
-  width: 30,
-  height: 20,
+  width: 60,
+  height: 40,
 };
 
 const boardEl = document.getElementById("board");
