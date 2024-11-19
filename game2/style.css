@@ -1,4 +1,6 @@
 * {
+  margin: 0;
+  padding: 0;
 }
 #gameContainer {
   text-align: center;
@@ -6,7 +8,7 @@
 #gameboard {
   border: 3px solid;
 }
-#score {
+#scoreText {
   font-family: "Permanent Marker", cursive;
   font-size: 100px;
 }

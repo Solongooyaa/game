@@ -2,8 +2,8 @@ let headTop = 5;
 let headLeft = 5;
 let direction = "right";
 let tails = [
-  { x: 2, y: 1 },
-  { x: 3, y: 1 },
+  { x: 2, y: 0 },
+  { x: 3, y: 0 },
 ];
 let intervalId = null;
 
@@ -112,12 +112,19 @@ function listenKey(event) {
       changeDirection("right");
       break;
   }
-  console.log(event);
 }
 document.addEventListener("keydown", listenKey);
-// function listenSpace() {
-//   if();
-// }
+function listenSpace(event) {
+  const space = event.space;
+  switch (space) {
+    case "start":
+      startGame("start");
+      break;
+    case "pause":
+      pauseGame("pause");
+      break;
+  }
+}
 document.addEventListener("keydown", listenSpace);
 function render() {
   let tailsHtml = "";
