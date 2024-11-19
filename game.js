@@ -28,11 +28,6 @@ function goDown() {
   render();
 }
 
-function goRight() {
-  headLeft = headLeft + 1;
-  render();
-}
-
 function changeDirection(newDirection) {
   if (direction === "up" || direction === "down") {
     if (newDirection === "right" || newDirection === "left") {
@@ -43,6 +38,10 @@ function changeDirection(newDirection) {
       direction = newDirection;
     }
   }
+}
+function goRight() {
+  headLeft = headLeft + 1;
+  render();
 }
 
 setInterval(gameLoop, 300);
@@ -63,8 +62,8 @@ function gameLoop() {
 function render() {
   const snakeHtml = `<div class = "snake" style = "width: ${
     1 * config.size
-  }px; height: ${1 * config.size}px; top: ${1 * config.size}px; left: ${
-    1 * config.size
+  }px; height: ${1 * config.size}px; top: ${headTop * config.size}px; left: ${
+    headLeft * config.size
   }px" ></div>`;
   boardEl.innerHTML = snakeHtml;
 }
