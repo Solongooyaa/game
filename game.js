@@ -1,11 +1,16 @@
-let headTop = 10;
-let headLeft = 12;
-let direction = "up";
+let headTop = 5;
+let headLeft = 5;
+let direction = "right";
+let tails = [
+  { x: 2, y: 1 },
+  { x: 3, y: 1 },
+];
+let intervalId = null;
 
 const config = {
   size: 20,
-  width: 60,
-  height: 40,
+  width: 30,
+  height: 20,
 };
 
 const boardEl = document.getElementById("board");
@@ -34,19 +39,48 @@ function changeDirection(newDirection) {
       direction = newDirection;
     }
   } else if (direction === "right" || direction === "left") {
-    if (direction === "up" || direction === "down") {
+    if (newDirection === "up" || newDirection === "down") {
       direction = newDirection;
     }
   }
 }
 function goRight() {
   headLeft = headLeft + 1;
+  if (headLeft === config.width) {
+    headLeft = 0;
+  }
   render();
 }
+function goLeft() {
+  headLeft = headLeft - 1;
+  if (headLeft < 0) {
+    headLeft = config.width - 1;
+  }
+  render();
+}
+function startGame() {
+  if (!intervalId) {
+    intervalId = setInterval(gameLoop, 300);
+  }
+}
+function pauseGame() {
+  clearInterval(intervalId);
+  intervalId = null;
+}
 
-setInterval(gameLoop, 300);
-
+function restartGame() {
+  headTop = 5;
+  headLeft = 5;
+  direction = "right";
+  tails = [
+    { x: 2, y: 1 },
+    { x: 3, y: 1 },
+  ];
+  startGame();
+}
 function gameLoop() {
+  tails.push({ x: headLeft, y: headTop });
+  tails.shift();
   switch (direction) {
     case "up":
       goUp();
@@ -57,14 +91,49 @@ function gameLoop() {
     case "down":
       goDown();
       break;
+    case "left":
+      goLeft();
+      break;
   }
 }
+function listenKey(event) {
+  const key = event.key;
+  switch (key) {
+    case "ArrowUp":
+      changeDirection("up");
+      break;
+    case "ArrowDown":
+      changeDirection("down");
+      break;
+    case "ArrowLeft":
+      changeDirection("left");
+      break;
+    case "ArrowRight":
+      changeDirection("right");
+      break;
+  }
+  console.log(event);
+}
+document.addEventListener("keydown", listenKey);
+// function listenSpace() {
+//   if();
+// }
+document.addEventListener("keydown", listenSpace);
 function render() {
-  const snakeHtml = `<div class = "snake" style = "width: ${
+  let tailsHtml = "";
+  for (let i = 0; i < tails.length; i++) {
+    tailsHtml += `<div class = "snake" style = "width: ${
+      1 * config.size
+    }px; height: ${1 * config.size}px; top: ${
+      tails[i].y * config.size
+    }px; left: ${tails[i].x * config.size}px" ></div>`;
+  }
+  const headHtml = `<div class = "snake" style = "width: ${
     1 * config.size
   }px; height: ${1 * config.size}px; top: ${headTop * config.size}px; left: ${
     headLeft * config.size
   }px" ></div>`;
+  const snakeHtml = ` ${tailsHtml}`;
   boardEl.innerHTML = snakeHtml;
 }
 render();
