@@ -1,9 +1,10 @@
-let headTop = 5;
-let headLeft = 4;
+let headY = 5;
+let headX = 5;
 let direction = "right";
 let tails = [
   { x: 2, y: 5 },
   { x: 3, y: 5 },
+  { x: 4, y: 5 },
 ];
 let intervalId = null;
 
@@ -18,17 +19,17 @@ boardEl.style.width = config.width * config.size + "px";
 boardEl.style.height = config.height * config.size + "px";
 
 function goUp() {
-  headTop = headTop - 1;
-  if (headTop < 0) {
-    headTop = config.height - 1;
+  headY = headY - 1;
+  if (headY < 0) {
+    headY = config.height - 1;
   }
   render();
 }
 
 function goDown() {
-  headTop = headTop + 1;
-  if (headTop === config.height) {
-    headTop = 0;
+  headY = headY + 1;
+  if (headY === config.height) {
+    headY = 0;
   }
   render();
 }
@@ -45,16 +46,16 @@ function changeDirection(newDirection) {
   }
 }
 function goRight() {
-  headLeft = headLeft + 1;
-  if (headLeft === config.width) {
-    headLeft = 0;
+  headX = headX + 1;
+  if (headX === config.width) {
+    headX = 0;
   }
   render();
 }
 function goLeft() {
-  headLeft = headLeft - 1;
-  if (headLeft < 0) {
-    headLeft = config.width - 1;
+  headX = headX - 1;
+  if (headX < 0) {
+    headX = config.width - 1;
   }
   render();
 }
@@ -63,23 +64,28 @@ function startGame() {
     intervalId = setInterval(gameLoop, 300);
   }
 }
+
+function generateFood() {
+  const food = headX;
+}
 function pauseGame() {
   clearInterval(intervalId);
   intervalId = null;
 }
 
 function restartGame() {
-  headTop = 5;
-  headLeft = 4;
+  headY = 5;
+  headX = 5;
   direction = "right";
   tails = [
-    { x: 2, y: 1 },
-    { x: 3, y: 1 },
+    { x: 2, y: 5 },
+    { x: 3, y: 5 },
+    { x: 4, y: 5 },
   ];
   startGame();
 }
 function gameLoop() {
-  tails.push({ x: headLeft, y: headTop });
+  tails.push({ x: headX, y: headY });
   tails.shift();
   switch (direction) {
     case "up":
@@ -115,13 +121,7 @@ function listenKey(event) {
 }
 document.addEventListener("keydown", listenKey);
 function listenSpace(event) {
-  const space = event.space;
-  console.log(space);
-  // const space = event.space;
-  // switch (space) {
-  //   case ""
-  // }
-  // console.log(space);
+  console.log(event);
 }
 document.addEventListener("keydown", listenSpace);
 function render() {
@@ -133,11 +133,11 @@ function render() {
       tails[i].y * config.size
     }px; left: ${tails[i].x * config.size}px" ></div>`;
   }
-  // const headHtml = `<div class = "snake" style = "width: ${
-  //   1 * config.size
-  // }px; height: ${1 * config.size}px; top: ${headTop * config.size}px; left: ${
-  //   headLeft * config.size
-  // }px" ></div>`;
+  const headHtml = `<div class = "snake" style = "width: ${
+    1 * config.size
+  }px; height: ${1 * config.size}px; top: ${headY * config.size}px; left: ${
+    headX * config.size
+  }px" ></div>`;
   const snakeHtml = ` ${tailsHtml}`;
   boardEl.innerHTML = snakeHtml;
 }
