@@ -1,9 +1,9 @@
 let headTop = 5;
-let headLeft = 5;
+let headLeft = 4;
 let direction = "right";
 let tails = [
-  { x: 2, y: 0 },
-  { x: 3, y: 0 },
+  { x: 2, y: 5 },
+  { x: 3, y: 5 },
 ];
 let intervalId = null;
 
@@ -70,7 +70,7 @@ function pauseGame() {
 
 function restartGame() {
   headTop = 5;
-  headLeft = 5;
+  headLeft = 4;
   direction = "right";
   tails = [
     { x: 2, y: 1 },
@@ -116,14 +116,12 @@ function listenKey(event) {
 document.addEventListener("keydown", listenKey);
 function listenSpace(event) {
   const space = event.space;
-  switch (space) {
-    case "start":
-      startGame("start");
-      break;
-    case "pause":
-      pauseGame("pause");
-      break;
-  }
+  console.log(space);
+  // const space = event.space;
+  // switch (space) {
+  //   case ""
+  // }
+  // console.log(space);
 }
 document.addEventListener("keydown", listenSpace);
 function render() {
@@ -135,12 +133,11 @@ function render() {
       tails[i].y * config.size
     }px; left: ${tails[i].x * config.size}px" ></div>`;
   }
-  const headHtml = `<div class = "snake" style = "width: ${
-    1 * config.size
-  }px; height: ${1 * config.size}px; top: ${headTop * config.size}px; left: ${
-    headLeft * config.size
-  }px" ></div>`;
+  // const headHtml = `<div class = "snake" style = "width: ${
+  //   1 * config.size
+  // }px; height: ${1 * config.size}px; top: ${headTop * config.size}px; left: ${
+  //   headLeft * config.size
+  // }px" ></div>`;
   const snakeHtml = ` ${tailsHtml}`;
   boardEl.innerHTML = snakeHtml;
 }
-render();
