@@ -67,6 +67,7 @@ function goLeft() {
   render();
 }
 function startGame() {
+  generateFood();
   if (!intervalId) {
     intervalId = setInterval(gameLoop, 300);
   }
@@ -94,6 +95,7 @@ function reset() {
     { x: 3, y: 5 },
     { x: 4, y: 5 },
   ];
+  generateFood();
 }
 function restartGame() {
   reset();
@@ -108,6 +110,12 @@ function gameLoop() {
     tails.push({ x: headX, y: headY });
     generateFood();
   }
+  for (let i = 0; i < tails.length - 1; i++) {
+    if (headX === tails[i].x && headY === tails[i].y) {
+      alert("Game over");
+    }
+  }
+
   switch (direction) {
     case "up":
       goUp();
