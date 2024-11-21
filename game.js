@@ -1,5 +1,8 @@
 let headY = 5;
 let headX = 5;
+let foodX;
+let foodY;
+let food;
 let direction = "right";
 let tails = [
   { x: 2, y: 5 },
@@ -10,13 +13,17 @@ let intervalId = null;
 
 const config = {
   size: 20,
-  width: 30,
+  width: 20,
   height: 20,
 };
 
 const boardEl = document.getElementById("board");
 boardEl.style.width = config.width * config.size + "px";
 boardEl.style.height = config.height * config.size + "px";
+
+food = document.createElement("div");
+food.classList.add("food");
+boardEl.appendChild(food);
 
 function goUp() {
   headY = headY - 1;
@@ -66,14 +73,19 @@ function startGame() {
 }
 
 function generateFood() {
-  const food = headX;
+  foodX = Math.floor(Math.random() * config.width);
+  foodY = Math.floor(Math.random() * config.height);
+
+  // food.style.width = `${20}px`;
+  // food.style.height = `${20}px`;
+  // food.style.top = `${foodY * config.size}px`;
+  // food.style.left = `${foodX * config.size}px`;
 }
 function pauseGame() {
   clearInterval(intervalId);
   intervalId = null;
 }
-
-function restartGame() {
+function reset() {
   headY = 5;
   headX = 5;
   direction = "right";
@@ -82,11 +94,20 @@ function restartGame() {
     { x: 3, y: 5 },
     { x: 4, y: 5 },
   ];
+}
+function restartGame() {
+  reset();
+  generateFood();
   startGame();
 }
 function gameLoop() {
   tails.push({ x: headX, y: headY });
   tails.shift();
+
+  if (headX === foodX && headY === foodY) {
+    tails.push({ x: headX, y: headY });
+    generateFood();
+  }
   switch (direction) {
     case "up":
       goUp();
@@ -133,11 +154,11 @@ function render() {
       tails[i].y * config.size
     }px; left: ${tails[i].x * config.size}px" ></div>`;
   }
-  const headHtml = `<div class = "snake" style = "width: ${
+  const foodHtml = `<div class = "food" style = "width: ${
     1 * config.size
-  }px; height: ${1 * config.size}px; top: ${headY * config.size}px; left: ${
-    headX * config.size
+  }px; height: ${1 * config.size}px; top: ${foodY * config.size}px; left: ${
+    foodX * config.size
   }px" ></div>`;
-  const snakeHtml = ` ${tailsHtml}`;
+  const snakeHtml = `${foodHtml} ${tailsHtml} `;
   boardEl.innerHTML = snakeHtml;
 }
