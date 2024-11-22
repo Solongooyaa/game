@@ -1,14 +1,19 @@
 let headY = 5;
 let headX = 5;
+
+let score = 0;
+
 let foodX;
 let foodY;
 let food;
+
 let direction = "right";
 let tails = [
   { x: 2, y: 5 },
   { x: 3, y: 5 },
   { x: 4, y: 5 },
 ];
+
 let intervalId = null;
 
 const config = {
@@ -21,9 +26,9 @@ const boardEl = document.getElementById("board");
 boardEl.style.width = config.width * config.size + "px";
 boardEl.style.height = config.height * config.size + "px";
 
-food = document.createElement("div");
-food.classList.add("food");
-boardEl.appendChild(food);
+// food = document.createElement("div");
+// food.classList.add("food");
+// boardEl.appendChild(food);
 
 function goUp() {
   headY = headY - 1;
@@ -99,21 +104,23 @@ function reset() {
 }
 function restartGame() {
   reset();
-  generateFood();
   startGame();
 }
 function gameLoop() {
   tails.push({ x: headX, y: headY });
   tails.shift();
 
-  if (headX === foodX && headY === foodY) {
-    tails.push({ x: headX, y: headY });
-    generateFood();
-  }
   for (let i = 0; i < tails.length - 1; i++) {
     if (headX === tails[i].x && headY === tails[i].y) {
       alert("Game over");
+      restartGame();
     }
+  }
+
+  if (headX === foodX && headY === foodY) {
+    tails.push({ x: headX, y: headY });
+    generateFood();
+    score += 1;
   }
 
   switch (direction) {
@@ -150,11 +157,32 @@ function listenKey(event) {
 }
 document.addEventListener("keydown", listenKey);
 function listenSpace(event) {
+  let isStarted = false; // Эхлүүлсэн эсэхийг шалгах
+
+  // Space товч дарахад ажиллах үйлдлийг тодорхойлох
+
+  if (event.code === "Space") {
+    event.preventDefault(); // Space товчийг хуудас дээр гүйлгэхгүй болгох
+
+    if (!isStarted) {
+      start(); // Хэрэв эхлээгүй бол Start хийх
+    } else {
+      stop(); // Хэрэв эхэлсэн бол Stop хийх
+    }
+  }
+
   console.log(event);
 }
 document.addEventListener("keydown", listenSpace);
+
 function render() {
   let tailsHtml = "";
+  const foodHtml = `<div class = "food" style = "width: ${
+    1 * config.size
+  }px; height: ${1 * config.size}px; top: ${foodY * config.size}px; left: ${
+    foodX * config.size
+  }px" ></div>`;
+
   for (let i = 0; i < tails.length; i++) {
     tailsHtml += `<div class = "snake" style = "width: ${
       1 * config.size
@@ -162,11 +190,6 @@ function render() {
       tails[i].y * config.size
     }px; left: ${tails[i].x * config.size}px" ></div>`;
   }
-  const foodHtml = `<div class = "food" style = "width: ${
-    1 * config.size
-  }px; height: ${1 * config.size}px; top: ${foodY * config.size}px; left: ${
-    foodX * config.size
-  }px" ></div>`;
-  const snakeHtml = `${foodHtml} ${tailsHtml} `;
-  boardEl.innerHTML = snakeHtml;
+
+  boardEl.innerHTML = `${foodHtml} ${tailsHtml} `;
 }

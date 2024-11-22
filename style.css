@@ -8,9 +8,8 @@
 .snake {
   background-color: rgb(73, 202, 94);
   position: absolute;
-  border-radius: 5px;
 }
 .food {
   position: absolute;
-  background-color: rgb(0, 0, 0);
+  background-image: url("https://png.pngtree.com/png-clipart/20190516/original/pngtree-summer-cartoon-fruit-apple-png-download-apple-snake-fruit-red-apple-png-image_3939961.jpg");
 }
