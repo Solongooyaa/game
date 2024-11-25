@@ -96,7 +96,7 @@ function restartGame() {
   reset();
   startGame();
 }
-
+function add() {}
 function gameLoop() {
   switch (nextDirection) {
     case "up":
